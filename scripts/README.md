@@ -1,1 +1,0 @@
-https://github.com/selesdev/mesto-project-ff.git
