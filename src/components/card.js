@@ -1,6 +1,6 @@
 import { imageOpen } from "../index.js";
 const cardTemplate = document.querySelector("#card-template").content
-export  function createCard(name ,link, delcard) {
+export  function createCard(name ,link, {delCard, imageOpen}) {
   const card = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImg = card.querySelector(".card__image");
   const cardTitle = card.querySelector(".card__title");
@@ -8,7 +8,7 @@ export  function createCard(name ,link, delcard) {
   cardImg.src = link;
   cardImg.alt = name;
   cardTitle.textContent = name;
-  card.querySelector(".card__delete-button").addEventListener("click", delcard);
+  card.querySelector(".card__delete-button").addEventListener("click", delCard);
   cardImg.addEventListener("click", function() {
     imageOpen (link,name)});
   likeButton.addEventListener("click", function() {
@@ -18,6 +18,6 @@ export  function createCard(name ,link, delcard) {
   return card;
 }
 
-export   function delcard(event) {
+export   function delCard(event) {
   event.target.closest(".card").remove();
 }

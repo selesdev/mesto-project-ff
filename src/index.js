@@ -1,34 +1,7 @@
 import "./index.css";
-import { createCard, delcard} from "./components/card.js";
-import {Openpopup, closePopup, cloceESC, setModalWindowEventListeners} from "./components/modal.js";
-
-
-const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  }
-];
+import { createCard, delCard} from "./components/card.js";
+import {openPopup, closePopup, cloceESC, setModalWindowEventListeners} from "./components/modal.js";
+import {initialCards} from "./components/initialCards.js"
 
 const cardTemplate = document.querySelector("#card-template").content
 const content = document.querySelector(".content")
@@ -44,7 +17,7 @@ const popupCaption = document.querySelector(".popup__caption");
 const formAdd = document.forms["new-place"];
 const cardNameInput = document.querySelector(".popup__input_type_card-name");
 const cardLinkInput = document.querySelector(".popup__input_type_url");
-const formElement = document.querySelector(".popup__form");
+const profileForm= document.querySelector(".popup__form");
 const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_description");
 const proName = document.querySelector(".profile__title");
@@ -53,7 +26,7 @@ const proJob = document.querySelector(".profile__description")
 
 
 for (let i = 0; i < initialCards.length; i++) {
-  const newCard = createCard (initialCards[i].name, initialCards[i].link,  delcard)
+  const newCard = createCard (initialCards[i].name, initialCards[i].link,  {delCard:delCard, imageOpen:imageOpen});
   placesList.append(newCard);
 }
 
@@ -61,41 +34,42 @@ export function imageOpen(scr,alt) {
   popupImage.src=scr;
   popupImage.alt=alt;
   popupCaption.textContent=alt;
-  Openpopup(popupImageType)
+  openPopup(popupImageType)
 };
 
 
 popupEditButton.addEventListener("click", function(){
-  Openpopup(popupEdit)
+  openPopup(popupEdit)
 });
 
 popupAddButton.addEventListener("click",function(){
-  Openpopup(popupAdd)
+  openPopup(popupAdd)
 });
 
 const popUps = document.querySelectorAll(".popup");
 
-popUps.forEach(function(ModalWidow){
-    setModalWindowEventListeners(ModalWidow);
-});
+popUps.forEach(setModalWindowEventListeners);
+
+
 
 function handleFormSubmit(evt) {
   evt.preventDefault(); 
   proName.textContent=nameInput.value;
   proJob.textContent=jobInput.value;
+  closePopup(popupEdit);
 }
 
-formElement.addEventListener('submit', handleFormSubmit);
+profileForm.addEventListener('submit', handleFormSubmit);
 
 popupEditButton.addEventListener("click", function(){
   nameInput.value=proName.textContent;
   jobInput.value=proJob.textContent;
-  Openpopup(popupEdit)
+  openPopup(popupEdit)
 });
 
 function addNewCard(evt) {
   evt.preventDefault();
-  placesList.prepend(createCard(cardNameInput.value, cardLinkInput.value, delcard));
+  placesList.prepend(createCard(cardNameInput.value, cardLinkInput.value, delCard));
   formAdd.reset();
   closePopup(popupAdd);
 };
@@ -103,14 +77,7 @@ function addNewCard(evt) {
 formAdd.addEventListener("submit",addNewCard)
 
 
-document.querySelectorAll(".popup").forEach(popup => {
+popUps.forEach(popup => {
   popup.classList.add("popup_is-animated")
 })
 
-popUps.forEach((popup) => {
-  popup.addEventListener("mousedown", (evt) => {
-    if (evt.target === popup) {
-      closePopup(popup)
-    }
-  })
-});
