@@ -52,14 +52,14 @@ popUps.forEach(setModalWindowEventListeners);
 
 
 
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault(); 
   proName.textContent=nameInput.value;
   proJob.textContent=jobInput.value;
   closePopup(popupEdit);
 }
 
-profileForm.addEventListener('submit', handleFormSubmit);
+profileForm.addEventListener('submit', handleProfileFormSubmit);
 
 popupEditButton.addEventListener("click", function(){
   nameInput.value=proName.textContent;
