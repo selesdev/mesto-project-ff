@@ -1,0 +1,23 @@
+.popup__error {
+  color: red;
+  font-size: 12px;
+  min-height: 14px;
+  margin-top: 5px;
+  display: block;
+  visibility: hidden;
+}
+
+.popup__error_visible {
+  visibility: visible;
+}
+
+.popup__input_type_error {
+  border-bottom: 1px solid red;
+}
+
+.popup__button_disabled {
+  opacity: 0.2;
+  pointer-events: none;
+  cursor: default;
+}
+  
