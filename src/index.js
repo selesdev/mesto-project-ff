@@ -64,7 +64,7 @@ Promise.all([getUserInformation(), getUserCards()])
         cardId: cardData._id,
         currentUserId: currentUserId
       });
-      placesList.prepend(newCard);
+      placesList.append(newCard);
     })
   })
   .catch(console.log)
@@ -168,10 +168,6 @@ popUps.forEach((popup) => {
 avatarButton.addEventListener("click", function () {
   avatarInput.value = "";
   clearValidation(avatarForm, validationConfig);
-  toggleButtonState(
-    Array.from(avatarForm.querySelectorAll(".popup__input")),
-    avatarForm.querySelector(".popup__button")
-  );
   openPopup(popupAvatar);
 });
 

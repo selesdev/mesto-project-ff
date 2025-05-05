@@ -1,77 +1,72 @@
-export function enableValidation() {
-  const forms = document.querySelectorAll(".popup__form");
+export function enableValidation(config) {
+  const forms = document.querySelectorAll(config.formSelector);
   forms.forEach((form) => {
-    setEventListeners(form);
+    setEventListeners(form, config);
   });
 }
 
-function setEventListeners(form) {
-  const inputs = Array.from(form.querySelectorAll(".popup__input"));
-  const button = form.querySelector(".popup__button");
+function setEventListeners(form, config) {
+  const inputs = Array.from(form.querySelectorAll(config.inputSelector));
+  const button = form.querySelector(config.submitButtonSelector);
 
-  toggleButtonState(inputs, button);
+  toggleButtonState(inputs, button, config);
 
   inputs.forEach((input) => {
     input.addEventListener("input", () => {
-      checkInputValidity(form, input);
-      toggleButtonState(inputs, button);
+      checkInputValidity(form, input, config);
+      toggleButtonState(inputs, button, config);
     });
   });
 }
 
-function checkInputValidity(form, input) {
-  const nameFieldsToValidate = ["name", "description", "place-name"];
-  const allowedPattern = /^[А-Яа-яЁёA-Za-z -]+$/;
-
-  if (nameFieldsToValidate.includes(input.name)) {
-    if (!allowedPattern.test(input.value)) {
-      const customMessage = input.dataset.errorMessage || "Разрешены только буквы, дефисы и пробелы";
-      input.setCustomValidity(customMessage);
-    } else {
-      input.setCustomValidity("");
-    }
+function checkInputValidity(form, input, config) {
+  if (input.validity.patternMismatch) {
+    const customMessage = input.dataset.errorMessage || input.validationMessage;
+    input.setCustomValidity(customMessage);
   } else {
-    input.setCustomValidity(""); 
+    input.setCustomValidity("");
   }
 
   if (!input.validity.valid) {
-    showInputError(form, input);
+    showInputError(form, input, config);
   } else {
-    hideInputError(form, input);
+    hideInputError(form, input, config);
   }
 }
 
-
-export function showInputError(form, input) {
-  const errorElement = form.querySelector(`.${input.classList[1]}-error`);
-  input.classList.add("popup__input_type_error");
-  errorElement.textContent = input.validationMessage;
-  errorElement.classList.add("popup__error_visible");
+function showInputError(form, input, config) {
+  const errorElement = form.querySelector(`#${input.id}-error`);
+  input.classList.add(config.inputErrorClass);
+  if (errorElement) {
+    errorElement.textContent = input.validationMessage;
+    errorElement.classList.add(config.errorClass);
+  }
 }
 
-export function hideInputError(form, input) {
-  const errorElement = form.querySelector(`.${input.classList[1]}-error`);
-  if (!errorElement) return;
-  input.classList.remove("popup__input_type_error");
-  errorElement.textContent = "";
-  errorElement.classList.remove("popup__error_visible");
+function hideInputError(form, input, config) {
+  const errorElement = form.querySelector(`#${input.id}-error`);
+  input.classList.remove(config.inputErrorClass);
+  if (errorElement) {
+    errorElement.textContent = "";
+    errorElement.classList.remove(config.errorClass);
+  }
 }
 
-export function toggleButtonState(inputs, button) {
+export function toggleButtonState(inputs, button, config) {
   const isFormValid = inputs.every((input) => input.validity.valid);
   button.disabled = !isFormValid;
-  button.classList.toggle("popup__button_disabled", !isFormValid);
+  button.classList.toggle(config.inactiveButtonClass, !isFormValid);
 }
 
-export function clearValidation(form) {
-  const inputs = Array.from(form.querySelectorAll(".popup__input"));
-  const button = form.querySelector(".popup__button");
+export function clearValidation(form, config) {
+  const inputs = Array.from(form.querySelectorAll(config.inputSelector));
+  const button = form.querySelector(config.submitButtonSelector);
 
   inputs.forEach((input) => {
     input.setCustomValidity("");
-    hideInputError(form, input);
+    hideInputError(form, input, config);
   });
 
   button.disabled = true;
-  button.classList.add("popup__button_disabled");
+  button.classList.add(config.inactiveButtonClass);
 }

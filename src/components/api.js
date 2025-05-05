@@ -16,15 +16,15 @@ function checkFunction(res) {
 };
 
 export function getUserInformation()  {
-  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-37/users/me`, {headers: config.headers}).then(checkFunction)
+  return fetch(`${config.baseUrl}/users/me`, {headers: config.headers}).then(checkFunction)
 };
 
 export function getUserCards() {
-  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-37/cards`, {headers: config.headers}).then(checkFunction)
+  return fetch(`${config.baseUrl}/cards`, {headers: config.headers}).then(checkFunction)
 };
 
 export function newInformationBack(name,about) {
-  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-37/users/me`, {
+  return fetch(`${config.baseUrl}/users/me`, {
     method: 'PATCH', 
     headers: config.headers,
     body: JSON.stringify({ name:name, about:about })
@@ -32,7 +32,7 @@ export function newInformationBack(name,about) {
 };
 
 export function addNewCard(name,link) {
-  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-37/cards`, {
+  return fetch(`${config.baseUrl}/cards`, {
     method: `POST`,
     headers: config.headers,
     body: JSON.stringify({name:name, link:link})
@@ -40,7 +40,7 @@ export function addNewCard(name,link) {
 };
 
 export function delNewCard(cardId){
-  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-37/cards/` + cardId, {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: config.headers
   }).then(checkFunction);
@@ -48,21 +48,21 @@ export function delNewCard(cardId){
 
 
 export function likeCard(cardId) {
-  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-37/cards/likes/` + cardId, {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: config.headers
   }).then(checkFunction);
 }
 
 export function unlikeCard(cardId) {
-  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-37/cards/likes/` + cardId, {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: config.headers
   }).then(checkFunction);
 }
 
 export function updateAvatar(avatarUrl) {
-  return fetch(`https://mesto.nomoreparties.co/v1/wff-cohort-37/users/me/avatar`, {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({ avatar: avatarUrl })

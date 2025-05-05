@@ -1,7 +1,7 @@
 import { delNewCard, likeCard, unlikeCard } from "../components/api.js";
 
 const cardTemplate = document.querySelector("#card-template").content;
-export function createCard(name, link, { delCard, handleImageClick, likes=[], ownerId, cardId, currentUserId}) {
+export function createCard(name, link, {handleImageClick, likes=[], ownerId, cardId, currentUserId}) {
   const card = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImg = card.querySelector(".card__image");
   const cardTitle = card.querySelector(".card__title");
